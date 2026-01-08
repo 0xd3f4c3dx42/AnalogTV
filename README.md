@@ -1,4 +1,3 @@
-# AnalogTV – Quick Start Guide
 AnalogTV – Quick Start Guide
 
 Welcome to AnalogTV. This document explains how to connect to the device, add new content, and maintain the system.
