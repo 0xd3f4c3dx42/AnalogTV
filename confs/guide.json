@@ -1,0 +1,13 @@
+{
+  "station_conf": {
+    "messages": ["Thank you for \n using FieldStation42!", "Happy Surfing!", "Check out \n http://analogtv.local", "Having issues? \n run AnalogTV.sh"],
+    "images": ["runtime/logo_images/gold42.png", "runtime/logo_images/city42.png", "runtime/logo_images/groove42.png","runtime/1.png"],
+    "network_name": "Guide",
+    "network_type": "guide",
+    "channel_number": 13,
+    "runtime_dir": "runtime/guide",
+    "play_sound": true,
+    "sound_to_play": "runtime/latin-journey.mp3",
+    "scroll_speed": 1.0
+  }
+}
