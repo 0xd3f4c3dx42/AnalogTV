@@ -120,7 +120,7 @@ Replace `<YOUTUBE_URL>` with the actual video link.
 
 **Example:**
 
-yt-dlp -f "bestvideo[height<=480][vcodec*=avc1]+bestaudio/best[height<=480][vcodec*=avc1]" -o "%(title)s.%(ext)s" "[https://www.youtube.com/watch?v=XXXXXXXXXXX](https://www.youtube.com/watch?v=dQw4w9WgXcQ)"
+yt-dlp -f "bestvideo[height<=480][vcodec*=avc1]+bestaudio/best[height<=480][vcodec*=avc1]" -o "%(title)s.%(ext)s" "[https://www.youtube.com/watch?v=dQw4w9WgXcQ](https://www.youtube.com/watch?v=dQw4w9WgXcQ)"
 
 All downloaded files should be placed into the appropriate channel folder, for example:
 
