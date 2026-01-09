@@ -9,6 +9,7 @@ echo "----------------------------------------"
 PROJECT_DIR="/home/analog/FieldStation42"
 REMOTE_SCRIPT="$PROJECT_DIR/scripts/remote.sh"
 WIFI_SCRIPT="$PROJECT_DIR/scripts/wifi-setup.sh"
+RUNTIME_SCRIPT="$PROJECT_DIR/scripts/runtimeReport.sh"
 USB_BASE="/mnt/analogtv"
 USB_CONFS="$USB_BASE/confs"
 USB_CATALOG="$USB_BASE/catalog"
@@ -261,6 +262,29 @@ wifi_setup() {
   fi
 }
 
+runtime_report() {
+  echo
+  echo "Running total playtime scan for all channels..."
+  echo
+
+  if [ ! -f "$RUNTIME_SCRIPT" ]; then
+    echo "runtimeReport.sh not found at:"
+    echo "  $RUNTIME_SCRIPT"
+    echo "Expected path: /home/analog/FieldStation42/scripts/runtimeReport.sh"
+    return 1
+  fi
+
+  if [ ! -x "$RUNTIME_SCRIPT" ]; then
+    echo "runtimeReport.sh is not executable. Making it executable."
+    chmod +x "$RUNTIME_SCRIPT" || {
+      echo "Failed to chmod +x runtimeReport.sh"
+      return 1
+    }
+  fi
+
+  "$RUNTIME_SCRIPT"
+}
+
 run_in_background() {
   local desc="$1"
   shift
@@ -381,7 +405,7 @@ if ! command -v python3 >/dev/null 2>&1; then
 fi
 
 if [ "$SYMLINK_ISSUE" -eq 1 ]; then
-  echo "NOTE: Symlink issues were detected. It is recommended to use option 5 to repair them."
+  echo "NOTE: Symlink issues were detected. It is recommended to use option 6 to repair them."
   echo
 fi
 
@@ -389,15 +413,16 @@ echo "What would you like to do?"
 echo "  1) Scan new files and rebuild catalog"
 echo "  2) Schedule options (add day / week / month)"
 echo "  3) Show schedule for all channels"
-echo "  4) Delete all schedules (advanced / destructive)"
-echo "  5) Fix confs/catalog/scripts symlinks"
-echo "  6) Remote control options"
-echo "  7) Join new Wi-Fi network"
-echo "  8) Reboot AnalogTV"
+echo "  4) Scan total playtime for all channels"
+echo "  5) Delete all schedules (advanced / destructive)"
+echo "  6) Fix confs/catalog/scripts symlinks"
+echo "  7) Remote control options"
+echo "  8) Join new Wi-Fi network"
+echo "  9) Reboot AnalogTV"
 echo "  0) Cancel / exit"
 echo
 
-read -rp "Enter choice [0-8]: " choice
+read -rp "Enter choice [0-9]: " choice
 
 ACTION_DESC=""
 COMMANDS=()
@@ -421,6 +446,11 @@ case "$choice" in
     RUN_IN_BACKGROUND=0
     ;;
   4)
+    ACTION_DESC="Scan total playtime for all channels"
+    COMMANDS=("runtime_report")
+    RUN_IN_BACKGROUND=0
+    ;;
+  5)
     echo
     echo "WARNING: This will DELETE ALL SCHEDULES."
     echo "  - This cannot be undone."
@@ -450,22 +480,22 @@ case "$choice" in
         ;;
     esac
     ;;
-  5)
+  6)
     ACTION_DESC="Fix confs/catalog/scripts symlinks"
     COMMANDS=("fix_symlinks")
     RUN_IN_BACKGROUND=0
     ;;
-  6)
+  7)
     ACTION_DESC="Remote control options"
     COMMANDS=("program_remote")
     RUN_IN_BACKGROUND=0
     ;;
-  7)
+  8)
     ACTION_DESC="Join new Wi-Fi network"
     COMMANDS=("wifi_setup")
     RUN_IN_BACKGROUND=0
     ;;
-  8)
+  9)
     echo
     echo "Rebooting will stop playback and restart the system."
     read -rp "Reboot AnalogTV now? [y/N] " rb
@@ -498,6 +528,11 @@ fi
 
 echo
 echo "You chose: $ACTION_DESC"
+
+if [ "$ACTION_DESC" = "Scan total playtime for all channels" ]; then
+  echo "Note: This scan can take several minutes, especially if you have a lot of content."
+fi
+
 read -rp "Proceed? [y/N] " confirm
 case "${confirm:-N}" in
   y|Y|yes|YES)
