@@ -1,12 +1,14 @@
 #!/bin/bash
 
-SERVICE="channelDisplay.service"
-CHANNEL_SCRIPT="/home/analog/FieldStation42/scripts/channelDisplay.py"
-FIELDSTATION_ROOT="/home/analog/FieldStation42"
+OSD_MATCH="fs42/osd/main.py"
 
 kill_tree() {
     local pid="$1"
     local children
+
+    [ -z "$pid" ] && return 0
+    [ "$pid" = "0" ] && return 0
+    [ "$pid" = "1" ] && return 0
 
     children=$(pgrep -P "$pid" 2>/dev/null || true)
 
@@ -19,35 +21,25 @@ kill_tree() {
     kill -9 "$pid" 2>/dev/null || true
 }
 
-echo "Checking $SERVICE ..."
+echo "Checking FieldStation42 OSD ..."
 
-if systemctl is-active --quiet "$SERVICE"; then
-    echo "$SERVICE is running. Capturing related PIDs..."
+OSD_PIDS=$(pgrep -f "$OSD_MATCH" 2>/dev/null || true)
 
-    ROOT_PIDS=$(pgrep -f "$CHANNEL_SCRIPT" 2>/dev/null || true)
+if [ -n "$OSD_PIDS" ]; then
+    echo "Killing FieldStation42 OSD process and its parent ..."
+    for pid in $OSD_PIDS; do
+        parent=$(ps -o ppid= -p "$pid" 2>/dev/null | tr -d ' ')
+        if [ -n "$parent" ] && [ "$parent" != "0" ] && [ "$parent" != "1" ]; then
+            kill_tree "$parent"
+        fi
+        kill_tree "$pid"
+    done
 
-    echo "Stopping $SERVICE ..."
-    sudo systemctl stop "$SERVICE" 2>/dev/null || true
-    sudo systemctl kill --kill-who=all "$SERVICE" 2>/dev/null || true
-    sleep 1
-    sudo systemctl kill -s SIGKILL --kill-who=all "$SERVICE" 2>/dev/null || true
-
-    if [ -n "$ROOT_PIDS" ]; then
-        echo "Killing channelDisplay.py process tree ..."
-        for pid in $ROOT_PIDS; do
-            kill_tree "$pid"
-        done
-    fi
-
-    echo "Killing any leftover FieldStation42 processes ..."
-    pkill -f "$CHANNEL_SCRIPT" 2>/dev/null || true
-    pkill -9 -f "$CHANNEL_SCRIPT" 2>/dev/null || true
-    pkill -f "$FIELDSTATION_ROOT" 2>/dev/null || true
-    pkill -9 -f "$FIELDSTATION_ROOT" 2>/dev/null || true
-
+    echo "Killing any leftover direct matches ..."
+    pkill -f "$OSD_MATCH" 2>/dev/null || true
+    pkill -9 -f "$OSD_MATCH" 2>/dev/null || true
 else
-    echo "$SERVICE is not running. Starting it ..."
-    sudo systemctl start "$SERVICE"
+    echo "FieldStation42 OSD is not running."
 fi
 
 echo
@@ -74,7 +66,5 @@ fi
 
 echo
 echo "Remaining matches:"
-systemctl is-active "$SERVICE" || true
-pgrep -af "$CHANNEL_SCRIPT" || echo "No channelDisplay.py process found."
-pgrep -af "$FIELDSTATION_ROOT" || echo "No leftover FieldStation42 process found."
+pgrep -af "$OSD_MATCH" || echo "No FieldStation42 OSD process found."
 pgrep -a -x mpv || echo "No mpv process found."
