@@ -10,6 +10,7 @@ PROJECT_DIR="/home/analog/FieldStation42"
 REMOTE_SCRIPT="$PROJECT_DIR/scripts/remote.sh"
 WIFI_SCRIPT="$PROJECT_DIR/scripts/wifi-setup.sh"
 RUNTIME_SCRIPT="$PROJECT_DIR/scripts/runtimeReport.sh"
+DISPLAY_SCRIPT="$PROJECT_DIR/scripts/mange_display.sh"
 USB_BASE="/mnt/analogtv"
 USB_CONFS="$USB_BASE/confs"
 USB_CATALOG="$USB_BASE/catalog"
@@ -285,6 +286,29 @@ runtime_report() {
   "$RUNTIME_SCRIPT"
 }
 
+return_to_desktop() {
+  echo
+  echo "Returning to desktop..."
+  echo
+
+  if [ ! -f "$DISPLAY_SCRIPT" ]; then
+    echo "mange_display.sh not found at:"
+    echo "  $DISPLAY_SCRIPT"
+    echo "Expected path: /home/analog/FieldStation42/scripts/mange_display.sh"
+    return 1
+  fi
+
+  if [ ! -x "$DISPLAY_SCRIPT" ]; then
+    echo "mange_display.sh is not executable. Making it executable."
+    chmod +x "$DISPLAY_SCRIPT" || {
+      echo "Failed to chmod +x mange_display.sh"
+      return 1
+    }
+  fi
+
+  "$DISPLAY_SCRIPT"
+}
+
 run_in_background() {
   local desc="$1"
   shift
@@ -419,10 +443,11 @@ echo "  6) Fix confs/catalog/scripts symlinks"
 echo "  7) Remote control options"
 echo "  8) Join new Wi-Fi network"
 echo "  9) Reboot AnalogTV"
+echo "  10) Return to desktop"
 echo "  0) Cancel / exit"
 echo
 
-read -rp "Enter choice [0-9]: " choice
+read -rp "Enter choice [0-10]: " choice
 
 ACTION_DESC=""
 COMMANDS=()
@@ -510,6 +535,11 @@ case "$choice" in
         exit 0
         ;;
     esac
+    ;;
+  10)
+    ACTION_DESC="Return to desktop"
+    COMMANDS=("return_to_desktop")
+    RUN_IN_BACKGROUND=0
     ;;
   0|"")
     echo "Canceled. No changes made."
