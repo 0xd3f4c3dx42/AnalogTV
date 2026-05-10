@@ -165,3 +165,36 @@ If you have a management web UI configured:
 3. Reboot the device once the rebuild is done.
 
 Rebuilding the catalog lets AnalogTV find your new files and update the schedules. A reboot ensures all channels pick up the latest content correctly.
+
+## 6. Using the Rear Rebuild / Reboot Button
+
+AnalogTV has a small button on the back of the unit that can be used for quick maintenance without logging in.
+
+This button is useful after new media has been added to the USB catalog.
+
+### Rebuild Catalog and Reboot
+
+Press the rear button **twice**.
+
+AnalogTV will automatically:
+
+1. Rebuild each station.
+2. Update the catalog.
+3. Reboot the machine.
+
+This is the fastest way to make newly added media available after placing files into the correct catalog folders.
+
+### Reboot Only
+
+Press the rear button **three times**.
+
+AnalogTV will reboot without rebuilding the stations or catalog.
+
+### Optional: Watching the Rebuild Process Over SSH
+
+The rebuild process happens automatically in the background. It is not normally visible on screen.
+
+To watch the rebuild progress, connect by SSH and run:
+
+```bash
+sudo journalctl -u gpioButtons.service -f
