@@ -197,4 +197,4 @@ The rebuild process happens automatically in the background. It is not normally 
 To watch the rebuild progress, connect by SSH and run:
 
 ```bash
-sudo journalctl -u gpioButtons.service -f
+~/FieldStation42/scripts/gpioStatus.sh
