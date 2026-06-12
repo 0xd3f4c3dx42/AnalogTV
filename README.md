@@ -2,11 +2,14 @@
 
 Welcome to **AnalogTV**. This document explains how to connect to the device, add new content, and maintain the system.
 
+Here is a video showing my method of building one of these.
+https://www.youtube.com/watch?v=RRlkJXp7n9o
+
 Use balena etcher to restore full disk image of **AnalogTV** for Raspberry pi 3 or 4 set to composite out with full Fieldstation 42 configuration:
 https://mega.nz/file/GawhSBiK#dxtKwH1jwKpJ0B-27t4GbPmxci7goJrAl5I0F-0sW_4
-Image will require a 10gb sd card or larger
+Disk image will require a 16gb sd card or larger
 
-This image will NOT output anything on HDMI and everything outlined below applies
+This disk image defaults to composite out and will NOT output anything on HDMI until videoOutToggle.sh is run.
 
 ## 1. Network & Login
 
