@@ -1,6 +1,11 @@
 # AnalogTV – Quick Start Guide
 
-Welcome to **AnalogTV**. This document explains how to connect to the device, add new content, and maintain the system.
+Welcome to **AnalogTV**. This is a hardware wrapper around FieldStation42:
+https://github.com/shane-mason/FieldStation42
+Full documentation, installation guide, and channel configuration walkthroughs are at:
+https://fieldstation42.com
+
+This document explains how to connect to the device, add new content, and maintain the system.
 
 Here is a video showing my method of building one of these.
 https://www.youtube.com/watch?v=RRlkJXp7n9o
