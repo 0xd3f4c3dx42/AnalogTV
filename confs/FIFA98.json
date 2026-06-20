@@ -1,18 +1,18 @@
 {
   "station_conf": {
-    "network_name": "HSN",
-    "channel_number": 10,
+    "network_name": "FIFA98",
+    "channel_number": 8,
     "network_type": "standard",
     "schedule_increment": 0,
     "panscan": 1.0,
     "break_strategy": "standard",
     "commercial_free": true,
-    "catalog_path": "catalog/HSN_catalog.bin",
-    "content_dir": "catalog/HSN",
+    "catalog_path": "catalog/FIFA98_catalog.bin",
+    "content_dir": "catalog/FIFA98",
     "commercial_dir": "commercials",
     "bump_dir": "bump",
-    "runtime_dir": "runtime/HSN",
-    "schedule_path": "runtime/HSN_schedule.bin",
+    "runtime_dir": "runtime/FIFA98",
+    "schedule_path": "runtime/FIFA98_schedule.bin",
     "standby_image": "runtime/standby.png",
     "monday": {
       "6": {
