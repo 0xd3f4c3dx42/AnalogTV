@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-import os
-import time
 import json
+import os
 import subprocess
+import time
 from pathlib import Path
 
 # Force a safe working directory for lgpio temp files.
@@ -25,12 +25,12 @@ SETDISPLAY_SCRIPT = FS_ROOT / "scripts" / "setDisplayText.py"
 
 # Static payloads for up/down
 PAYLOADS = {
-    "up":   '{"command": "up", "channel": -1}\n',
+    "up": '{"command": "up", "channel": -1}\n',
     "down": '{"command": "down", "channel": -1}\n',
 }
 
 # Guide channel
-GUIDE_CHANNEL = 13
+GUIDE_CHANNEL = 21
 
 # Guide button behavior
 guide_pressed_at = None
@@ -79,7 +79,9 @@ def set_display(text):
             print(f"[gpioButtons] Env python not found at {ENV_PYTHON}")
             return
         if not SETDISPLAY_SCRIPT.exists():
-            print(f"[gpioButtons] setDisplayText script not found at {SETDISPLAY_SCRIPT}")
+            print(
+                f"[gpioButtons] setDisplayText script not found at {SETDISPLAY_SCRIPT}"
+            )
             return
 
         print(f"[gpioButtons] Setting display to '{text}'")
@@ -152,7 +154,9 @@ def shutdown_system():
         return
 
     guide_shutdown_triggered = True
-    print(f"[gpioButtons] Guide held for {GUIDE_HOLD_SECONDS:.1f}s: blanking LCD and shutting down...")
+    print(
+        f"[gpioButtons] Guide held for {GUIDE_HOLD_SECONDS:.1f}s: blanking LCD and shutting down..."
+    )
 
     run_blank_display()
 
@@ -228,7 +232,11 @@ def update_rebuild_state():
 
 
 def on_guide_pressed():
-    global guide_pressed_at, guide_shutdown_triggered, guide_last_display, guide_current_countdown
+    global \
+        guide_pressed_at, \
+        guide_shutdown_triggered, \
+        guide_last_display, \
+        guide_current_countdown
 
     guide_pressed_at = time.monotonic()
     guide_shutdown_triggered = False
@@ -255,7 +263,9 @@ def on_guide_released():
     guide_current_countdown = None
 
     if held_for <= GUIDE_TAP_MAX_SECONDS:
-        print(f"[gpioButtons] Guide tap: sending guide command (channel {GUIDE_CHANNEL})")
+        print(
+            f"[gpioButtons] Guide tap: sending guide command (channel {GUIDE_CHANNEL})"
+        )
         send_command("guide")
     elif held_for < GUIDE_HOLD_SECONDS:
         print("[gpioButtons] Guide hold aborted; restoring last channel display")
