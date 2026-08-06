@@ -10,11 +10,13 @@ This document explains how to connect to the device, add new content, and mainta
 Here is a video showing my method of building one of these.
 https://www.youtube.com/watch?v=RRlkJXp7n9o
 
-Use balena etcher to restore full disk image of **AnalogTV** for Raspberry pi 3 or 4 set to composite out with full Fieldstation 42 configuration:
-https://mega.nz/file/GawhSBiK#dxtKwH1jwKpJ0B-27t4GbPmxci7goJrAl5I0F-0sW_4
+Use Balena Etcher to restore full disk image of **AnalogTV** for Raspberry pi 3 or 4 set to composite out (Soldered on test pads or using this adapter https://www.amazon.com/Adafruit-Composite-Video-Raspberry-ADA2881/dp/B06W2JXLSK) with full FieldStation42 configuration:
+https://mega.nz/file/DLhDCbjb#2W86MQA15MyRjFejrlxGxDUVOVd2g1NIsl-eGOunnJY
+_**FieldStation42 Updated to d27afc8**_
+
 Disk image will require a 16gb sd card or larger
 
-This disk image defaults to composite out and will NOT output anything on HDMI until videoOutToggle.sh is run.
+**This disk image defaults to composite out and will NOT output anything on HDMI.**
 
 ## 1. Network & Login
 
