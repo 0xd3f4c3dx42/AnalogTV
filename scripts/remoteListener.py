@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 import os
-import subprocess
 import time
+import subprocess
 from pathlib import Path
 
 from evdev import InputDevice, categorize, ecodes
 
 # Path to the Flirc keyboard device (from: ls -l /dev/input/by-id | grep flirc)
 
+DEVICE_PATH = str(next(Path("/dev/input/by-id").glob("*flirc*event-kbd")))
 # Flirc Gen1
-DEVICE_PATH = "/dev/input/by-id/usb-flirc.tv_flirc-event-kbd"
+#DEVICE_PATH = "/dev/input/by-id/usb-flirc.tv_flirc_2706FECF503243584C2E3120FF091E42-if01-event-kbd"
 # Flirc Gen2
-# DEVICE_PATH = "/dev/input/by-id/usb-flirc.tv_flirc-if01-event-kbd"
+#DEVICE_PATH = "/dev/input/by-id/usb-flirc.tv_flirc-if01-event-kbd"
 
 
 # Project paths
@@ -24,19 +25,19 @@ OSD_SCRIPT = FS_ROOT / "scripts" / "OSD.sh"
 
 # JSON payloads to send into channel.socket
 PAYLOADS = {
-    "up": '{"command": "up", "channel": -1}\n',
-    "down": '{"command": "down", "channel": -1}\n',
-    "guide": '{"command": "direct", "channel": 21}\n',
+    "up":    '{"command": "up", "channel": -1}\n',
+    "down":  '{"command": "down", "channel": -1}\n',
+    "guide": '{"command": "direct", "channel": 22}\n',
 }
 
 # Map keycodes from Flirc to command names above
 # "screen_toggle" and "osd" are handled separately (not written to channel.socket)
 KEYMAP = {
-    "KEY_UP": "up",
-    "KEY_DOWN": "down",
-    "KEY_HOME": "guide",  # guide/home button -> channel 21
-    "KEY_ESC": "screen_toggle",  # Escape key toggles screen via screenToggle.sh
-    "KEY_SPACE": "osd",  # Space key runs OSD.sh
+    "KEY_UP":      "up",
+    "KEY_DOWN":    "down",
+    "KEY_HOME":    "guide",         # guide/home button -> channel 13
+    "KEY_ESC":     "screen_toggle", # Escape key toggles screen via screenToggle.sh
+    "KEY_SPACE":   "osd",           # Space key runs OSD.sh
     # Add more mappings here if needed
 }
 
