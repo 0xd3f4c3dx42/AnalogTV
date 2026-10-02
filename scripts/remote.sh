@@ -21,6 +21,7 @@ program_nav_volume_home() {
   echo "  4) up"
   echo "  5) down"
   echo "  6) home"
+  echo "  7) screen off"
   echo
   echo "Make sure the FLIRC receiver is plugged in and the remote is ready."
   read -rp "Press Enter to begin recording these buttons in order..." _
@@ -31,7 +32,7 @@ program_nav_volume_home() {
   flirc_util record up
   flirc_util record down
   flirc_util record home
-
+  flirc_util record escape
   echo
   echo "Navigation / volume / home buttons recorded."
 }
